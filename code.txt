@@ -1,0 +1,48 @@
+// Pin definitions
+const int soilMoisturePin = A0; // Analog pin for soil moisture sensor
+const int buzzerPin = 8;       // Digital pin for buzzer
+const int ledPin = 7;          // Digital pin for LED
+
+// Moisture threshold (adjust this value based on your sensor's output)
+const int moistureThreshold = 500;
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(9600);
+
+  // Initialize pins
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+  pinMode(soilMoisturePin, INPUT);
+
+  // Turn off buzzer and LED initially
+  digitalWrite(buzzerPin, LOW);
+  digitalWrite(ledPin, LOW);
+
+  Serial.println("Soil Moisture Sensor System Initialized");
+}
+
+void loop() {
+  // Read soil moisture value
+  int moistureValue = analogRead(soilMoisturePin);
+
+  // Print the moisture value to the Serial Monitor
+  Serial.print("Soil Moisture Value: ");
+  Serial.println(moistureValue);
+
+  // Check if moisture value is below the threshold
+  if (moistureValue < moistureThreshold) {
+    // Activate buzzer and LED
+    digitalWrite(buzzerPin, HIGH);
+    digitalWrite(ledPin, HIGH);
+    Serial.println("Soil is dry! Buzzer and LED activated.");
+  } else {
+    // Deactivate buzzer and LED
+    digitalWrite(buzzerPin, LOW);
+    digitalWrite(ledPin, LOW);
+    Serial.println("Soil moisture level is adequate.");
+  }
+
+  // Small delay for stability
+  delay(1000);
+}
